@@ -1,4 +1,4 @@
-import Link from "next/link";
+
 import { ActiveLink } from "./ActiveLink";
 /* debemos importarlo asi, porque si es de manera global no permite */
 import styles from "./Navbar.module.css";
