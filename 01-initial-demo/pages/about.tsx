@@ -20,7 +20,7 @@ export default function AboutPage() {
 
 /* esto es para tener mas limpio nuestros layout anidados, es propio de next js, despues esto lo usamos en _app */
 
-AboutPage.getLayout = function getLayout(page) {
+AboutPage.getLayout = function getLayout(page: JSX.Element[]) {
   return (
     <MainLayout>
       <DarkLayout>{page}</DarkLayout>
