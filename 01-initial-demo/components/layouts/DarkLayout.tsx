@@ -1,4 +1,7 @@
-export const DarkLayout = ({ children }) => {
+import { FC } from "react";
+
+/* FC functional component puede ser un tipado */
+export const DarkLayout: FC = ({ children }) => {
   return (
     <div
       style={{
