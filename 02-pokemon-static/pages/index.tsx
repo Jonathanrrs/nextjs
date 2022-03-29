@@ -1,15 +1,18 @@
 import type { NextPage, GetStaticProps } from "next";
+import { pokeApi } from "../api";
 import { Layout } from "../components/layouts";
 
 const HomePage: NextPage = (props) => {
   console.log(props);
 
-  return <Layout title="Listado de pokemones">
-    <ul>
-      <li>Pokemon</li>
-      <li>Pokemon</li>
-    </ul>
-  </Layout>;
+  return (
+    <Layout title="Listado de pokemones">
+      <ul>
+        <li>Pokemon</li>
+        <li>Pokemon</li>
+      </ul>
+    </Layout>
+  );
 };
 
 /* esto se ejecuta en el build de la aplicacion */
@@ -17,10 +20,13 @@ const HomePage: NextPage = (props) => {
 /* esto se ejeceuta del lado del servidor, solo puede hacerse en las pages, no en los componentes */
 /* Usar esto cuando sepamos de antemano que vamos a utilizar esta información */
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  console.log("hola mundo");
+  const { data } = await pokeApi.get("/pokemon?limit=151");
+  console.log(data);
 
   return {
-    props: {},
+    props: {
+      pokemons: data.results,
+    },
   };
 };
 
