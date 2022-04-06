@@ -1,5 +1,6 @@
-import { Spacer, Text, useTheme } from "@nextui-org/react";
+import { Spacer, Text, useTheme, Link } from "@nextui-org/react";
 import Image from "next/image";
+import NextLink from "next/link";
 
 export const Nabvar = () => {
   const { theme } = useTheme();
@@ -22,17 +23,25 @@ export const Nabvar = () => {
         width={70}
         height={70}
       />
-      <Text color="white" h2>
-        P
-      </Text>
-      <Text color="white" h3>
-        okémon
-      </Text>
+      <NextLink href="/" passHref>
+        <Link>
+          <Text color="white" h2>
+            P
+          </Text>
+          <Text color="white" h3>
+            okémon
+          </Text>
+        </Link>
+      </NextLink>
       {/* se recomienda css para componentes de nexui */}
       <Spacer css={{ flex: 1 }} />
-      <Text color="white" h3>
-        Favoritos
-      </Text>
+      <NextLink href="/favorites" passHref>
+        <Link>
+          <Text color="white" h3>
+            Favoritos
+          </Text>
+        </Link>
+      </NextLink>
     </div>
   );
 };
