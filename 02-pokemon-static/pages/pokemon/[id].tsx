@@ -1,26 +1,28 @@
 import { useState } from "react";
 import { GetStaticProps, NextPage, GetStaticPaths } from "next";
 import { Button, Card, Container, Grid, Image, Text } from "@nextui-org/react";
-import confetti from 'canvas-confetti'
+import confetti from "canvas-confetti";
 
 import { pokeApi } from "../../api";
 import { Layout } from "../../components/layouts";
 import { Pokemon } from "../../interfaces";
-import { localFavorites } from "../../utils";
+import { getPokemonInfo, localFavorites } from "../../utils";
 
 interface Props {
   pokemon: Pokemon;
 }
 
 const PokemonPage: NextPage<Props> = ({ pokemon }) => {
-  const [isInFavorites, setIsInFavorites] = useState<boolean>(localFavorites.existInFavorites(pokemon.id));
+  const [isInFavorites, setIsInFavorites] = useState<boolean>(
+    localFavorites.existInFavorites(pokemon.id)
+  );
 
   /* esta parte se corre en el front y tambien en el back */
   /* aqui no sirve el window del front, por ejemplo no podemos usar localstorage */
   const onToggleFavorite = () => {
     localFavorites.toggleFavorite(pokemon.id);
-    setIsInFavorites(!isInFavorites)
-    if(!isInFavorites) {
+    setIsInFavorites(!isInFavorites);
+    if (!isInFavorites) {
       confetti({
         zIndex: 999,
         particleCount: 100,
@@ -29,8 +31,8 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
         origin: {
           x: 1,
           y: 0,
-        }
-      })
+        },
+      });
     }
   };
 
@@ -132,17 +134,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   /* asi lo tipamos porque si lo hacemos de la mera manera son tipos raros y largos
   y para nuestro uso asi resulta mejor como string */
   const { id } = params as { id: string };
-  const { data } = await pokeApi.get<Pokemon>(`/pokemon/${id}`);
-
-  const pokemon = {
-    id: data.id,
-    name: data.name,
-    sprites: data.sprites
-  }
 
   return {
     props: {
-      pokemon
+      pokemon: await getPokemonInfo(id),
     },
   };
 };

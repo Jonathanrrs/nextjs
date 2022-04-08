@@ -10,7 +10,9 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
   const router = useRouter();
   const onClick = () => {
     /* para naevgar a otra página */
-    router.push(`/pokemon/${pokemon.id}`);
+    /* es importante para el seo y bots de google mandar ulrs con nombres
+    asi es mas legible */
+    router.push(`/name/${pokemon.name}`);
   };
   return (
     <Grid xs={6} sm={3} md={2} xl={1} key={pokemon.id}>
