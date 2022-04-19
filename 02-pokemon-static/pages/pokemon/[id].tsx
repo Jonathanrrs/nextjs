@@ -125,7 +125,8 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
       params: { id },
     })),
     /* si se pone un url que no fue previamente renderizado regrese 404 */
-    fallback: false,
+    // fallback: false,
+    fallback: "blocking",
   };
 };
 
@@ -134,12 +135,24 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   /* asi lo tipamos porque si lo hacemos de la mera manera son tipos raros y largos
   y para nuestro uso asi resulta mejor como string */
   const { id } = params as { id: string };
+  const pokemon = await getPokemonInfo(id);
+
+  if(!pokemon) {
+    return {
+      redirect: {
+        destination: '/',
+        /* esto ayuda a los bots de google, false porque en un futuro
+        los de pokemon pueden crear dicho pokemon */
+        permanent: false
+      }
+    }
+  }
 
   return {
     props: {
-      pokemon: await getPokemonInfo(id),
+      pokemon,
     },
-    revalidate: 86400, /* seconds */
+    revalidate: 86400 /* seconds */,
   };
 };
 
