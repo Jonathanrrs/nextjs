@@ -1,14 +1,14 @@
 import { Box } from "@mui/material";
 import Head from "next/head";
 import { FC } from "react";
-import { Nabvar } from '../ui';
+import { Nabvar, Sidebar } from "../ui";
 
 interface Props {
   title?: string;
-  children: JSX.Element | JSX.Element[]
+  children: JSX.Element | JSX.Element[];
 }
 
-export const Layout: FC<Props> = ({ title = 'OpenJira - App', children }) => {
+export const Layout: FC<Props> = ({ title = "OpenJira - App", children }) => {
   return (
     <Box sx={{ flexFlow: 1 }}>
       <Head>
@@ -17,9 +17,8 @@ export const Layout: FC<Props> = ({ title = 'OpenJira - App', children }) => {
       {/* navbar */}
       <Nabvar />
       {/* sidebar */}
-      <Box sx={{paddingTop: '10px 20px'}}>
-        {children}
-      </Box>
+      <Sidebar />
+      <Box sx={{ paddingTop: "10px 20px" }}>{children}</Box>
     </Box>
   );
 };
