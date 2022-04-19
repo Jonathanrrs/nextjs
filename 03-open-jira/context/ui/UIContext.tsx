@@ -4,4 +4,4 @@ interface ContextProps {
   sidemenuOpen: boolean;
 }
 
-export const UiContext = createContext({} as ContextProps);
+export const UIContext = createContext({} as ContextProps);
