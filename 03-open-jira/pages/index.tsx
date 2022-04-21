@@ -11,21 +11,21 @@ const HomePage: NextPage = () => {
         <Grid item xs={12} sm={4}>
           <Card sx={{ height: "calc(100vh - 100px)" }}>
             <CardHeader title="Pendientes" />
-            <CardContent>
-              {/* agregar una nueva entrada */}
-              {/* listado de las entradas */}
-              <EntryList />
-            </CardContent>
+            {/* agregar una nueva entrada */}
+            {/* listado de las entradas */}
+            <EntryList status="pending" />
           </Card>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Card sx={{ height: "calc(100vh - 100px)" }}>
             <CardHeader title="En progreso" />
+            <EntryList status="in-progress" />
           </Card>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Card sx={{ height: "calc(100vh - 100px)" }}>
             <CardHeader title="Completadas" />
+            <EntryList status="finished" />
           </Card>
         </Grid>
       </Grid>

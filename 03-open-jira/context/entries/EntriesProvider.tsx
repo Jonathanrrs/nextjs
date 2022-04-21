@@ -15,19 +15,19 @@ const Entries_INITIAL_STATE: EntriesState = {
   entries: [
     {
       _id: uuidv4(),
-      description: 'Agregar los issues al proyecto final de React Native',
+      description: 'Pendiente: Agregar los issues al proyecto final de React Native',
       status: 'pending',
       createdAt: Date.now(),
     },
     {
       _id: uuidv4(),
-      description: 'Crear un Pull Request al proyecto final de React Native',
+      description: 'En-progreso Crear un Pull Request al proyecto final de React Native',
       status: 'in-progress',
       createdAt: Date.now(),
     },
     {
       _id: uuidv4(),
-      description: 'Agregar Redux al proyecto',
+      description: 'Terminadas Agregar Redux al proyecto',
       status: 'finished',
       createdAt: Date.now(),
     },
