@@ -11,8 +11,8 @@ interface Props {
 }
 
 export const EntryList: FC<Props> = ({ status }) => {
-  const { entries } = useContext(EntriesContext);
-  const { isDraggin } = useContext(UIContext);
+  const { entries, updateEntry } = useContext(EntriesContext);
+  const { isDraggin, endDraggin } = useContext(UIContext);
   const entriesByStatus = useMemo(
     () => entries.filter((entry) => entry.status === status),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -23,7 +23,11 @@ export const EntryList: FC<Props> = ({ status }) => {
   };
   const onDropEntry = (event: DragEvent<HTMLDivElement>) => {
     const id = event.dataTransfer.getData("text");
-    console.log({ id });
+    /* !, sabemos que no es posible que nos regrese un undefined */
+    const entry = entries.find(e => e._id === id)!;
+    entry.status = status;
+    updateEntry(entry);
+    endDraggin();
   };
 
   return (
