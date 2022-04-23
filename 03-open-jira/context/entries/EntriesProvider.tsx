@@ -12,28 +12,7 @@ interface Props {
 }
 
 const Entries_INITIAL_STATE: EntriesState = {
-  entries: [
-    {
-      _id: uuidv4(),
-      description:
-        "Pendiente: Agregar los issues al proyecto final de React Native",
-      status: "pending",
-      createdAt: Date.now(),
-    },
-    {
-      _id: uuidv4(),
-      description:
-        "En-progreso Crear un Pull Request al proyecto final de React Native",
-      status: "in-progress",
-      createdAt: Date.now(),
-    },
-    {
-      _id: uuidv4(),
-      description: "Terminadas Agregar Redux al proyecto",
-      status: "finished",
-      createdAt: Date.now(),
-    },
-  ],
+  entries: [],
 };
 
 export const EntriesProvider: FC<Props> = ({ children }) => {
