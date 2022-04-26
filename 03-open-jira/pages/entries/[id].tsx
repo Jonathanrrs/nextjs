@@ -1,3 +1,4 @@
+import { useState, ChangeEvent } from "react";
 import {
   Button,
   Card,
@@ -22,12 +23,31 @@ import { EntryStatus } from "../../interfaces/entry";
 const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
 
 const EntryPage = () => {
+  const [inputValue, setInputValue] = useState("");
+  const [status, setStatus] = useState<EntryStatus>("pending");
+  const [tocuhed, setTocuhed] = useState(false);
+
+  const onInputValueChanged = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
+
+  const onStatusChanged = (event: ChangeEvent<HTMLInputElement>) => {
+    setStatus(event.target.value as EntryStatus);
+  };
+
+  const onSave = () => {
+    
+  }
+
   return (
     <Layout title="----">
       <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
         <Grid item xs={12} sm={8} md={6}>
           <Card>
-            <CardHeader title="Entrada:" subheader="Creada hace minutos" />
+            <CardHeader
+              title={`Entrada: ${inputValue}`}
+              subheader="Creada hace minutos"
+            />
             <CardContent>
               <TextField
                 sx={{ marginTop: 2, marginBottom: 1 }}
@@ -36,11 +56,13 @@ const EntryPage = () => {
                 autoFocus
                 multiline
                 label="Nueva entrada"
+                value={inputValue}
+                onChange={onInputValueChanged}
               />
               {/* radio */}
               <FormControl>
                 <FormLabel>Estado:</FormLabel>
-                <RadioGroup row>
+                <RadioGroup row value={status} onChange={onStatusChanged}>
                   {validStatus.map((option) => (
                     <FormControlLabel
                       key={option}
@@ -57,6 +79,7 @@ const EntryPage = () => {
                 startIcon={<SaveAsOutlinedIcon />}
                 variant="contained"
                 fullWidth
+                onClick={onSave}
               >
                 Save
               </Button>
