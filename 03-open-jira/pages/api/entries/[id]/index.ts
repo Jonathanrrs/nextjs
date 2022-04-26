@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { db } from "../../../database";
-import { Entry } from "../../../models";
-import { IEntry } from "../../../models/Entry";
+import { db } from "../../../../database";
+import { Entry } from "../../../../models";
+import { IEntry } from "../../../../models/Entry";
 
 type Data = { message: string } | IEntry;
 
@@ -12,7 +12,7 @@ export default function handler(
 ) {
   // const { id } = req.query;
   // if (!mongoose.isValidObjectId(id)) {
-  //   res.status(400).json({ message: "El id no es válido " + id });
+  //   return res.status(400).json({ message: "El id no es válido " + id });
   // }
 
   switch (req.method) {

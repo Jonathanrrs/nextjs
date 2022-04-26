@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+// import mongoose from "mongoose"; /* no funciona actualmente el mongoose en middlware */
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest, ev: NextFetchEvent) {
