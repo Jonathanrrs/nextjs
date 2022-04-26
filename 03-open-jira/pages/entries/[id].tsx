@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useMemo } from "react";
 import {
   Button,
   Card,
@@ -25,7 +25,12 @@ const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
 const EntryPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [status, setStatus] = useState<EntryStatus>("pending");
-  const [tocuhed, setTocuhed] = useState(false);
+  const [touched, setTouched] = useState(false);
+
+  const isNotValid = useMemo(
+    () => inputValue.length <= 0 && touched,
+    [inputValue, touched]
+  );
 
   const onInputValueChanged = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -35,9 +40,7 @@ const EntryPage = () => {
     setStatus(event.target.value as EntryStatus);
   };
 
-  const onSave = () => {
-    
-  }
+  const onSave = () => {};
 
   return (
     <Layout title="----">
@@ -58,6 +61,11 @@ const EntryPage = () => {
                 label="Nueva entrada"
                 value={inputValue}
                 onChange={onInputValueChanged}
+                onBlur={() => setTouched(true)}
+                helperText={
+                  isNotValid && "Ingrese un valor"
+                }
+                error={isNotValid}
               />
               {/* radio */}
               <FormControl>
@@ -80,6 +88,7 @@ const EntryPage = () => {
                 variant="contained"
                 fullWidth
                 onClick={onSave}
+                disabled={inputValue.length <= 0}
               >
                 Save
               </Button>
