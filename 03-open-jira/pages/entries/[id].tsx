@@ -20,17 +20,17 @@ import { Layout } from "../../components/layouts";
 import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { EntryStatus } from "../../interfaces/entry";
-import {isValidObjectId} from "mongoose";
+import { dbEntries } from "../../database";
 
 const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
 
 interface Props {
-
+  entry: Entry
 }
 
 const EntryPage: FC = (props) => {
-  console.log({props});
-  
+  console.log({ props });
+
   const [inputValue, setInputValue] = useState("");
   const [status, setStatus] = useState<EntryStatus>("pending");
   const [touched, setTouched] = useState(false);
@@ -126,20 +126,22 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   /* si viene por url son strings */
   const { id } = params as { id: string };
 
-  if(!isValidObjectId(id)) {
+  const entry = await dbEntries.getEntryById(id);
+
+  if (!entry) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         /* en false porque la pagina sigue existiendo */
-        permanent: false
-      }
-    }
+        permanent: false,
+      },
+    };
   }
 
   return {
     /* estas son enviodas al componente del page */
     props: {
-      id
+      entry: entry.description
     },
   };
 };
