@@ -9,5 +9,9 @@ export const getEntryById = async (id: string): Promise<IEntry | null> => {
   const entry = await Entry.findById(id).lean();
   await db.disconnect();
 
-  return entry; /* no va a funcionar por la serializacion */
+  // return entry; /* no va a funcionar por la serializacion */
+  /* esto es la solucion universal */
+  return JSON.parse(
+    JSON.stringify(entry)
+  ); 
 };

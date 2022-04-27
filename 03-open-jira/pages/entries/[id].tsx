@@ -19,20 +19,18 @@ import {
 import { Layout } from "../../components/layouts";
 import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { EntryStatus } from "../../interfaces/entry";
+import { EntryStatus, Entry } from "../../interfaces/entry";
 import { dbEntries } from "../../database";
 
 const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
 
 interface Props {
-  entry: Entry
+  entry: Entry;
 }
 
-const EntryPage: FC = (props) => {
-  console.log({ props });
-
-  const [inputValue, setInputValue] = useState("");
-  const [status, setStatus] = useState<EntryStatus>("pending");
+const EntryPage: FC<Props> = ({ entry }) => {
+  const [inputValue, setInputValue] = useState(entry.description);
+  const [status, setStatus] = useState<EntryStatus>(entry.status);
   const [touched, setTouched] = useState(false);
 
   const isNotValid = useMemo(
@@ -51,13 +49,13 @@ const EntryPage: FC = (props) => {
   const onSave = () => {};
 
   return (
-    <Layout title="----">
+    <Layout title={inputValue.substring(0, 20) + "..."}>
       <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
         <Grid item xs={12} sm={8} md={6}>
           <Card>
             <CardHeader
-              title={`Entrada: ${inputValue}`}
-              subheader="Creada hace minutos"
+              title={`Entrada`}
+              subheader={`Creada hace ${entry.createdAt} minutos`}
             />
             <CardContent>
               <TextField
@@ -141,7 +139,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     /* estas son enviodas al componente del page */
     props: {
-      entry: entry.description
+      entry: entry,
     },
   };
 };
