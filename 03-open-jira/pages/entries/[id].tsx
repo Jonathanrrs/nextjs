@@ -1,4 +1,5 @@
-import { useState, ChangeEvent, useMemo } from "react";
+import { useState, ChangeEvent, useMemo, FC } from "react";
+import { GetServerSideProps } from "next";
 import {
   Button,
   Card,
@@ -19,10 +20,17 @@ import { Layout } from "../../components/layouts";
 import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { EntryStatus } from "../../interfaces/entry";
+import {isValidObjectId} from "mongoose";
 
 const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
 
-const EntryPage = () => {
+interface Props {
+
+}
+
+const EntryPage: FC = (props) => {
+  console.log({props});
+  
   const [inputValue, setInputValue] = useState("");
   const [status, setStatus] = useState<EntryStatus>("pending");
   const [touched, setTouched] = useState(false);
@@ -62,9 +70,7 @@ const EntryPage = () => {
                 value={inputValue}
                 onChange={onInputValueChanged}
                 onBlur={() => setTouched(true)}
-                helperText={
-                  isNotValid && "Ingrese un valor"
-                }
+                helperText={isNotValid && "Ingrese un valor"}
                 error={isNotValid}
               />
               {/* radio */}
@@ -111,3 +117,29 @@ const EntryPage = () => {
 };
 
 export default EntryPage;
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+/* es renderizado bajo demando del usuario */
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  /* si viene por url son strings */
+  const { id } = params as { id: string };
+
+  if(!isValidObjectId(id)) {
+    return {
+      redirect: {
+        destination: '/',
+        /* en false porque la pagina sigue existiendo */
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    /* estas son enviodas al componente del page */
+    props: {
+      id
+    },
+  };
+};
