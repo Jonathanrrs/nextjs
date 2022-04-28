@@ -1,11 +1,22 @@
 import "../styles/globals.css";
 import type { AppContext, AppProps } from "next/app";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { darkTheme } from "../themes";
+import { CssBaseline, Theme, ThemeProvider } from "@mui/material";
+import { darkTheme, lightTheme, customTheme } from "../themes";
 
-function MyApp({ Component, pageProps, ...rest }: AppProps) {
+interface Props extends AppProps {
+  theme: string;
+}
+
+function MyApp({ Component, pageProps, theme }: Props) {
+
+  const currentTheme:Theme = theme === 'light'
+    ? lightTheme
+    : theme === 'dark'
+      ? darkTheme
+      : customTheme;
+
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={currentTheme}>
       <CssBaseline />
       <Component {...pageProps} />
     </ThemeProvider>
@@ -13,7 +24,8 @@ function MyApp({ Component, pageProps, ...rest }: AppProps) {
 }
 
 /* esto se debe usar con mucho cuidado */
-/* getinitialProps no es recomendable usarlo */
+/* getinitialProps no es recomendable usarlo, ademas nos convierte todas las paginas
+en server side */
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
 
