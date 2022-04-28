@@ -1,5 +1,6 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Layout } from "../components/layouts";
+import Cookies from "js-cookie";
 import {
   Card,
   CardContent,
@@ -13,8 +14,19 @@ export const ThemeChangerPage = () => {
   const [currentTheme, setCurrentTheme] = useState("light");
 
   const onThemeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCurrentTheme(event.target.value);
+    const selectedTheme = event.target.value;
+    setCurrentTheme(selectedTheme);
+    localStorage.setItem("theme", selectedTheme);
+
+    /* en cookies solo hay 4k de almacenamiento */
+    /* las cookies se pueden mandar al backend */
+    /* para almacenar en cookies */
+    Cookies.set("theme", selectedTheme);
   };
+
+  useEffect(() => {
+    console.log(localStorage.getItem("theme"));
+  }, []);
 
   return (
     <Layout>
