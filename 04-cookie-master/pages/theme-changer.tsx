@@ -14,10 +14,12 @@ import {
   RadioGroup,
 } from "@mui/material";
 
-export const ThemeChangerPage: FC = (props) => {
-  const [currentTheme, setCurrentTheme] = useState("light");
+interface Props {
+  theme: string;
+}
 
-  console.log({ props });
+export const ThemeChangerPage: FC<Props> = ({theme}) => {
+  const [currentTheme, setCurrentTheme] = useState(theme);
 
   const onThemeChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedTheme = event.target.value;
@@ -56,7 +58,7 @@ export const ThemeChangerPage: FC = (props) => {
               <FormControlLabel
                 value="custom"
                 control={<Radio />}
-                label="Cuatom"
+                label="Custom"
               />
             </RadioGroup>
           </FormControl>
@@ -74,9 +76,12 @@ export const ThemeChangerPage: FC = (props) => {
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   /* para leer las cookies del lado del server con next js no se ocupa el paquete de cookies js */
   const { theme = "light", name = "No name" } = req.cookies;
+
+  const validThemes = ["light", "dark", "custom"];
+
   return {
     props: {
-      theme,
+      theme: validThemes.includes(theme) ? theme : "dark",
       name,
     },
   };
