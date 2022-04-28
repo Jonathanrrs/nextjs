@@ -2,7 +2,9 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { Layout } from "../components/layouts";
 import Cookies from "js-cookie";
+import axios from "axios";
 import {
+  Button,
   Card,
   CardContent,
   FormControl,
@@ -28,8 +30,14 @@ export const ThemeChangerPage: FC = (props) => {
     Cookies.set("theme", selectedTheme);
   };
 
+  const onClick = async () => {
+    const { data } = await axios.get("/api/hello");
+    console.log({ data });
+  };
+
   useEffect(() => {
-    console.log(localStorage.getItem("theme"));
+    // console.log(localStorage.getItem("theme"));
+    // console.log(Cookies.get("theme"));
   }, []);
 
   return (
@@ -52,6 +60,7 @@ export const ThemeChangerPage: FC = (props) => {
               />
             </RadioGroup>
           </FormControl>
+          <Button onClick={onClick}>Solicitud</Button>
         </CardContent>
       </Card>
     </Layout>
@@ -62,13 +71,13 @@ export const ThemeChangerPage: FC = (props) => {
 // - Only if you need to pre-render a page whose data must be fetched at request time
 
 /* server side rendering, se genera esta página bajo demanda */
-export const getServerSideProps: GetServerSideProps = async ({req}) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   /* para leer las cookies del lado del server con next js no se ocupa el paquete de cookies js */
-  const {theme = 'light', name = 'No name'} = req.cookies;
+  const { theme = "light", name = "No name" } = req.cookies;
   return {
     props: {
       theme,
-      name
+      name,
     },
   };
 };
