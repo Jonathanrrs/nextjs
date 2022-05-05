@@ -12,6 +12,8 @@ export interface IProduct {
   gender: 'men'|'women'|'kid'|'unisex'
 
   /* agregar createdat y updatedat */
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type ISize = 'XS'|'S'|'M'|'L'|'XL'|'XXL'|'XXXL';
