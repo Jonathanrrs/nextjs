@@ -18,6 +18,7 @@ const productSchema = new Schema(
     ],
     slug: { type: String, required: true, unique: true },
     tags: [{ type: String }],
+    title: { type: String, required: true},
     type: {
       type: String,
       enum: {
@@ -40,6 +41,7 @@ const productSchema = new Schema(
 );
 
 /* crear indice de mongo */
+productSchema.index({ title: "text", tags: "text" });
 
 const Product: Model<IProduct> =
   mongoose.models.Product || model("Product", productSchema);
