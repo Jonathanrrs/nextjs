@@ -6,7 +6,6 @@ import { useProducts } from "../../hooks";
 
 const KidPage = () => {
   const { products, isLoading } = useProducts("/products?gender=kid");
-  console.log(products);
   
   return (
     <ShopLayout
