@@ -1,12 +1,16 @@
 import { Box, Button, Chip, Grid, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { ProductSlideShow, SizeSelector } from "../../components/products";
 import { ItemCounter } from "../../components/ui";
-import { initialData } from "../../database/products";
-
-const product = initialData.products[0];
+import { useProducts } from "../../hooks";
 
 const ProductPage = () => {
+  /* para obtener url */
+  // const router = useRouter();
+  /* renombrar */
+  // const { products: product, isLoading } = useProducts( `/products/${router.query.slug}`// );
+
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
       <Grid container spacing={3}>
@@ -28,7 +32,10 @@ const ProductPage = () => {
               <Typography variant="subtitle2">Cantidad</Typography>
               {/* itemcounter */}
               <ItemCounter />
-              <SizeSelector selectedSize={product.sizes[0]} sizes={product.sizes} />
+              <SizeSelector
+                selectedSize={product.sizes[0]}
+                sizes={product.sizes}
+              />
             </Box>
             {/* agregar al carrito */}
             <Button color="secondary" className="circular-btn">

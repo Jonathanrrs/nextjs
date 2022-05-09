@@ -35,7 +35,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
     >
       <Card>
         {/* prevenir que cargue los demás productos */}
-        <NextLink href="/product/slug" passHref prefetch={false}>
+        <NextLink href={`/product/${product.slug}`} passHref prefetch={false}>
           <Link>
             <CardActionArea>
               <CardMedia
