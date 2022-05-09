@@ -1,11 +1,19 @@
 import { Box, Button, Chip, Grid, Typography } from "@mui/material";
-import { useRouter } from "next/router";
+import { NextPage, GetServerSideProps } from "next";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { ProductSlideShow, SizeSelector } from "../../components/products";
 import { ItemCounter } from "../../components/ui";
+import { dbProducts } from "../../database";
 import { useProducts } from "../../hooks";
+import { IProduct } from "../../interfaces";
 
-const ProductPage = () => {
+interface Props {
+  product: IProduct;
+}
+
+const ProductPage: NextPage<Props> = ({ product }) => {
+  /* esto es una forma de hacerlo pero no se acostumbra asi porque asi no tiene SEO */
+
   /* para obtener url */
   // const router = useRouter();
   /* renombrar */
@@ -54,6 +62,32 @@ const ProductPage = () => {
       </Grid>
     </ShopLayout>
   );
+};
+
+/* getserversideProps */
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { slug = "" } = params as { slug: string };
+  const product = await dbProducts.getProductBySlug(slug);
+
+  if (!product) {
+    return {
+      redirect: {
+        destination: "/",
+        /* no sabemos si algun dia será un producto, por eso false */
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      product,
+    },
+  };
 };
 
 export default ProductPage;
