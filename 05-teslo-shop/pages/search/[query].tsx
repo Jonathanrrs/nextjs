@@ -1,12 +1,15 @@
-import type { NextPage } from "next";
+import type { NextPage, GetServerSideProps } from "next";
 import { Typography } from "@mui/material";
 import { ShopLayout } from "../../components/layouts";
 import { ProductList } from "../../components/products";
-import { useProducts } from "../../hooks";
-import { FullScreenLoading } from "../../components/ui";
+import { dbProducts } from "../../database";
+import { IProduct } from "../../interfaces";
 
-const SearchPage: NextPage = () => {
-  const { products, isLoading } = useProducts("/products");
+interface Props {
+  products: IProduct[];
+}
+
+const SearchPage: NextPage<Props> = ({ products }) => {
   return (
     <ShopLayout
       title={"Teslo-shop - Search"}
@@ -19,9 +22,37 @@ const SearchPage: NextPage = () => {
       <Typography variant="h2" sx={{ mb: 1 }}>
         ABC ---123
       </Typography>
-      {isLoading ? <FullScreenLoading /> : <ProductList products={products} />}
+      <ProductList products={products} />
     </ShopLayout>
   );
+};
+
+/* ssr para no crear páginas por cada peticion que se haga */
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { query = "" } = params as { query: string };
+  /* no tiene sentido hacer una peticion a nuestro propio backend, son 2 veces */
+
+  if (query.length === 0) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: true,
+      },
+    };
+  }
+
+  let products = await dbProducts.getProductsByTerm(query);
+  /* todo ,retornar otros productos */
+
+  return {
+    props: {
+      products,
+    },
+  };
 };
 
 export default SearchPage;
