@@ -22,7 +22,7 @@ const SearchPage: NextPage<Props> = ({ products, foundProducts, query }) => {
         Buscar productos
       </Typography>
       {foundProducts ? (
-        <Typography variant="h2" sx={{ mb: 1 }}>
+        <Typography variant="h2" sx={{ mb: 1 }} textTransform="capitalize">
           Término: {query}
         </Typography>
       ) : (
@@ -30,7 +30,7 @@ const SearchPage: NextPage<Props> = ({ products, foundProducts, query }) => {
           <Typography variant="h2" sx={{ mb: 1 }}>
             No encontramos ningún producto
           </Typography>
-          <Typography variant="h2" sx={{ ml: 1 }} color="secondary">
+          <Typography variant="h2" sx={{ ml: 1 }} color="secondary" textTransform="capitalize">
             {query}
           </Typography>
         </Box>
@@ -61,7 +61,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   let products = await dbProducts.getProductsByTerm(query);
   const foundProducts = products.length > 0;
-  /* todo ,retornar otros productos */
   if (!foundProducts) {
     products = await dbProducts.getAllProducts();
   }
