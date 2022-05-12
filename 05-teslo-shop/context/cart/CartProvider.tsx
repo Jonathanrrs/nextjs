@@ -74,6 +74,10 @@ export const CartProvider: FC<Props> = ({ children }) => {
     });
   };
 
+  const updateCartQuantity = (product: ICartProduct) => {
+    dispatch({ type: "[Cart] - Change cart quantity", payload: product });
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -81,6 +85,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
 
         /* methods */
         addProductToCart,
+        updateCartQuantity,
       }}
     >
       {children}
