@@ -2,8 +2,9 @@ import { Box, Button, Grid, Link, TextField, Typography } from "@mui/material";
 import NextLink from "next/link";
 import React from "react";
 import { AuthLayout } from "../../components/layouts/AuthLayout";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { validations } from "../../utils";
+import { tesloApi } from "../../api";
 
 type FormData = {
   email: string;
@@ -16,10 +17,17 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  
 
-  const onLoginUser = (data: FormData) => {
-    console.log({ data });
+  const onLoginUser = async ({ email, password }: FormData) => {
+    try {
+      const { data } = await tesloApi.post("/user/login", { email, password });
+      const { token, user } = data;
+      console.log({token, user});
+      
+    } catch (error) {
+      console.log('Error en las credenciales');
+      
+    }
   };
   return (
     <AuthLayout title="Ingresar">
@@ -33,17 +41,15 @@ const LoginPage = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-              type="email"
+                type="email"
                 label="Correo"
                 variant="filled"
                 fullWidth
                 /* react jook form */
-                {
-                  ...register("email", {
-                    required: 'Este campo es requerido',
-                    validate: validations.isEmail
-                  })
-                }
+                {...register("email", {
+                  required: "Este campo es requerido",
+                  validate: validations.isEmail,
+                })}
                 /* !! si existe un error, de valor booleano */
                 error={!!errors.email}
                 helperText={errors.email?.message}
@@ -55,12 +61,10 @@ const LoginPage = () => {
                 type="password"
                 variant="filled"
                 fullWidth
-                {
-                  ...register("password", {
-                    required: 'Este campo es requerido',
-                    minLength: {value: 6, message: 'Mínimo 6 caracteres'}
-                  })
-                }
+                {...register("password", {
+                  required: "Este campo es requerido",
+                  minLength: { value: 6, message: "Mínimo 6 caracteres" },
+                })}
                 /* !! si existe un error, de valor booleano */
                 error={!!errors.password}
                 helperText={errors.password?.message}
