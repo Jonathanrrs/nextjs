@@ -3,6 +3,7 @@ import NextLink from "next/link";
 import React from "react";
 import { AuthLayout } from "../../components/layouts/AuthLayout";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { validations } from "../../utils";
 
 type FormData = {
   email: string;
@@ -15,13 +16,14 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
+  
 
   const onLoginUser = (data: FormData) => {
     console.log({ data });
   };
   return (
     <AuthLayout title="Ingresar">
-      <form onSubmit={handleSubmit(onLoginUser)}>
+      <form onSubmit={handleSubmit(onLoginUser)} noValidate>
         <Box sx={{ width: 350, padding: "10px 20px" }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -36,7 +38,15 @@ const LoginPage = () => {
                 variant="filled"
                 fullWidth
                 /* react jook form */
-                {...register("email")}
+                {
+                  ...register("email", {
+                    required: 'Este campo es requerido',
+                    validate: validations.isEmail
+                  })
+                }
+                /* !! si existe un error, de valor booleano */
+                error={!!errors.email}
+                helperText={errors.email?.message}
               />
             </Grid>
             <Grid item xs={12}>
@@ -45,7 +55,15 @@ const LoginPage = () => {
                 type="password"
                 variant="filled"
                 fullWidth
-                {...register("password")}
+                {
+                  ...register("password", {
+                    required: 'Este campo es requerido',
+                    minLength: {value: 6, message: 'Mínimo 6 caracteres'}
+                  })
+                }
+                /* !! si existe un error, de valor booleano */
+                error={!!errors.password}
+                helperText={errors.password?.message}
               />
             </Grid>
             <Grid item xs={12}>
