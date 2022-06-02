@@ -1,4 +1,4 @@
-import { FC, ReactNode, useReducer } from "react";
+import { FC, ReactNode, useEffect, useReducer } from "react";
 import { tesloApi } from "../../api";
 import { IUser } from "../../interfaces";
 import Cookies from "js-cookie";
@@ -21,6 +21,22 @@ interface Props {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE);
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  const checkToken = async () => {
+    try {
+      /* axios manda las cookies por defecto */
+      const { data } = await tesloApi.get("/user/validate-token");
+      const { token, user } = data;
+      Cookies.set("token", token);
+      dispatch({ type: "[Auth] - Login", payload: user });
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
 
   const loginUser = async (
     email: string,
