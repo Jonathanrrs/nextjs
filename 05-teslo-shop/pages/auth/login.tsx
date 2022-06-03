@@ -24,6 +24,8 @@ type FormData = {
 const LoginPage = () => {
   const { loginUser } = useContext(AuthContext);
   const router = useRouter();
+  console.log(router.query.p?.toString());
+
   const {
     register,
     handleSubmit,
@@ -108,7 +110,14 @@ const LoginPage = () => {
               </Button>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="end">
-              <NextLink href="/auth/register" passHref>
+              <NextLink
+                href={
+                  router.query.p
+                    ? `/auth/register?=p${router.query.p}`
+                    : "/auth/register"
+                }
+                passHref
+              >
                 <Link underline="always">¿No tienes cuenta?</Link>
               </NextLink>
             </Grid>
