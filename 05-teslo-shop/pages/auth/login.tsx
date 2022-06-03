@@ -45,7 +45,8 @@ const LoginPage = () => {
     }
 
     /* Para que no pueda regresar al login */
-    router.replace("/");
+    const destination = router.query.p?.toString() || "/";
+    router.replace(destination);
   };
   return (
     <AuthLayout title="Ingresar">

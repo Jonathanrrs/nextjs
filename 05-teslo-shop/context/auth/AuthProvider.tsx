@@ -4,6 +4,7 @@ import { IUser } from "../../interfaces";
 import Cookies from "js-cookie";
 import { AuthContext, authReducer } from "./";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export interface AuthState {
   isLoggedIn: boolean;
@@ -21,14 +22,14 @@ interface Props {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE);
+  const router = useRouter();
 
   useEffect(() => {
     checkToken();
   }, []);
 
   const checkToken = async () => {
-
-    if(!Cookies.get('token')) {
+    if (!Cookies.get("token")) {
       return;
     }
 
@@ -90,6 +91,14 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     }
   };
 
+  const logout = () => {
+    Cookies.remove("token");
+    Cookies.remove("cart");
+
+    /* es como un refresg, un F5 */
+    router.reload();
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -98,6 +107,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         /* methods */
         loginUser,
         registerUser,
+        logout,
       }}
     >
       {children}
