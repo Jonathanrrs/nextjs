@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { AuthContext, authReducer } from "./";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 export interface AuthState {
   isLoggedIn: boolean;
@@ -28,7 +28,9 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if(status === 'authenticated') {
-      // dispatch({type: '[Auth] - Login', payload: data.user as IUser})
+      console.log(data?.user);
+      
+      dispatch({type: '[Auth] - Login', payload: data.user as IUser})
     }
     
   }, [status, data])
@@ -103,9 +105,10 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   };
 
   const logout = () => {
-    Cookies.remove("token");
+    /* ya no es necesario */
+    // Cookies.remove("token");
+    
     Cookies.remove("cart");
-
     Cookies.remove("firstName");
     Cookies.remove("lastName");
     Cookies.remove("address");
@@ -114,9 +117,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     Cookies.remove("city");
     Cookies.remove("country");
     Cookies.remove("phone");
+    /* ya no es necesario por la auth con nextauth */
+    /* router.reload() */
+    signOut()
 
-    /* es como un refresg, un F5 */
-    router.reload();
+    
   };
 
   return (
