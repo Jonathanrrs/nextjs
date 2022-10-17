@@ -38,6 +38,12 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 
+  /* custom pages */
+  pages: {
+    signIn: '/auth/login',
+    newUser: 'auth/register'
+  },
+
   /* Callbacks */
   /* por defecto es wjt */
   callbacks: {
