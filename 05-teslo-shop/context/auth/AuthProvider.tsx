@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { AuthContext, authReducer } from "./";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export interface AuthState {
   isLoggedIn: boolean;
@@ -22,11 +23,21 @@ interface Props {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE);
+  const {data, status} = useSession()
   const router = useRouter();
 
   useEffect(() => {
-    checkToken();
-  }, []);
+    if(status === 'authenticated') {
+      // dispatch({type: '[Auth] - Login', payload: data.user as IUser})
+    }
+    
+  }, [status, data])
+  
+
+  /* esto era auth personalizada */
+  // useEffect(() => {
+  //   checkToken();
+  // }, []);
 
   const checkToken = async () => {
     if (!Cookies.get("token")) {
