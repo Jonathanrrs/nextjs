@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import {
   Grid,
   TextField,
@@ -9,6 +10,7 @@ import {
   Button,
 } from "@mui/material";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
+import { jwt } from "../../utils";
 const AddressPage = () => {
   return (
     <ShopLayout
@@ -18,7 +20,7 @@ const AddressPage = () => {
       <Typography variant="h1" component="h1">
         Dirección
       </Typography>
-      <Grid container spacing={2} sx={{mt: 2}}>
+      <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={6}>
           <TextField label="Nombre" variant="filled" fullWidth />
         </Grid>
@@ -61,6 +63,34 @@ const AddressPage = () => {
       </Box>
     </ShopLayout>
   );
+};
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { token = "" } = req.cookies;
+  let isValidToken = false;
+
+  try {
+    await jwt.isValidToken(token)
+    isValidToken = true
+  } catch (error) {
+    isValidToken = false
+  }
+
+  if(!isValidToken) {
+    return {
+      redirect: {
+        destination: '/auth/login?p=/checkout/address',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default AddressPage;
