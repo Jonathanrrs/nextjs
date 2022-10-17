@@ -3,6 +3,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
+import { dbUsers } from "../../../database";
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -27,7 +28,12 @@ export const authOptions: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
-        return null;
+        console.log(credentials);
+        
+        return await dbUsers.checkUserEmaiLPassword(
+          credentials!.email,
+          credentials!.password
+        );
       },
     }),
   ],
@@ -40,7 +46,7 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = account.access_token;
         switch (account.type) {
           case "oauth":
-            break;  
+            break;
           case "credentials":
             token.user = user;
             break;
@@ -49,7 +55,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token, user }) {
-      session.accessToken = token.accessToken;  
+      session.accessToken = token.accessToken;
       session.user = token.user as any;
       return session;
     },
