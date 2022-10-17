@@ -26,7 +26,6 @@ type FormData = {
 const LoginPage = () => {
   const { loginUser } = useContext(AuthContext);
   const router = useRouter();
-  console.log(router.query.p?.toString());
 
   const {
     register,
