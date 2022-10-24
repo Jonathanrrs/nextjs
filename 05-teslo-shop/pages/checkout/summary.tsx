@@ -17,10 +17,12 @@ import { CartContext } from "../../context";
 import { countries } from "../../utils";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import { ArrowForward } from "@mui/icons-material";
 
 const SummaryPage = () => {
   const router = useRouter();
-  const { shippingAddress, numberOfItems } = useContext(CartContext);
+  const { shippingAddress, numberOfItems, createOrder } =
+    useContext(CartContext);
 
   useEffect(() => {
     if (!Cookies.get("firstName")) {
@@ -49,6 +51,9 @@ const SummaryPage = () => {
   //   );
   //   return countryFiltered[0].name;
   // };
+  const onCreateOrder = () => {
+    createOrder();
+  };
 
   return (
     <ShopLayout title="Resumen de orden" pageDescription="Resumen de la orden">
@@ -97,7 +102,12 @@ const SummaryPage = () => {
               </Box>
               <OrderSummary />
               <Box sx={{ mt: 3 }}>
-                <Button color="secondary" className="circulat-btn" fullWidth>
+                <Button
+                  color="secondary"
+                  className="circulat-btn"
+                  fullWidth
+                  onClick={onCreateOrder}
+                >
                   Confirmar orden
                 </Button>
               </Box>
