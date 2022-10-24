@@ -62,7 +62,7 @@ const AddressPage = () => {
 
   useEffect(() => {
     reset(getAddressFromCookies());
-  }, []);
+  }, [reset]);
 
   const onAddress = (data: FormData) => {
     updateAddress(data);
