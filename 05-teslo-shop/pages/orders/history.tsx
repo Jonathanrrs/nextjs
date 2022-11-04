@@ -21,7 +21,7 @@ const columns: GridColDef[] = [
       return params.row.paid ? (
         <Chip color="success" label="Pagada" variant="outlined" />
       ) : (
-        <Chip color="error" label="No agada" variant="outlined" />
+        <Chip color="error" label="No pagada" variant="outlined" />
       );
     },
   },
@@ -32,7 +32,7 @@ const columns: GridColDef[] = [
     sortable: false,
     renderCell: (params: GridValueGetterParams) => {
       return (
-        <NextLink href={`/orders/${params.row.id}`} passHref>
+        <NextLink href={`/orders/${params.row.orderId}`} passHref>
           <Link underline="always">Orden</Link>
         </NextLink>
       );
@@ -40,18 +40,18 @@ const columns: GridColDef[] = [
   },
 ];
 
-const rows = [
-  { id: 1, paid: true, fullname: "Jonathan Ruiz" },
-  { id: 2, paid: false, fullname: "Sebastian Cordova" },
-  { id: 3, paid: false, fullname: "Alvaro Fidalgo" },
-  { id: 4, paid: true, fullname: "Carlos Mariscales" },
-];
-
 interface Props {
   orders: IOrder[];
 }
 
-const HistoryPage: NextPage<Props> = ({orders}) => {
+const HistoryPage: NextPage<Props> = ({ orders }) => {
+  const rows = orders.map((order, idx) => ({
+    id: idx + 1,
+    paid: order.isPaid,
+    fullname: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
+    orderId: order._id,
+  }));
+
   return (
     <ShopLayout
       title="Historial de ordenes"
@@ -60,7 +60,7 @@ const HistoryPage: NextPage<Props> = ({orders}) => {
       <Typography variant="h1" component="h1">
         Historial de ordenes
       </Typography>
-      <Grid container>
+      <Grid container className="fadeIn">
         <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
           <DataGrid
             rows={rows}
