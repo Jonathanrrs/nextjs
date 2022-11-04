@@ -166,7 +166,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
     const body: IOrder = {
       orderItems: state.cart.map((product) => ({
         ...product,
-        image: product.images!,
+        images: product.images!,
         size: product.size!,
       })),
       shippingAddress: state.shippingAddress,
