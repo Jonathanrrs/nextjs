@@ -5,7 +5,7 @@ import { currency } from "../../utils";
 import { IOrder } from "../../interfaces/order";
 
 interface Props {
-  order: IOrder;
+  order?: IOrder;
 }
 
 export const OrderSummary = ({ order }: Props) => {
