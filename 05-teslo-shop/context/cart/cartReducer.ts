@@ -1,6 +1,5 @@
 import { ICartProduct, ShippingAddress } from "../../interfaces";
 import { CartState } from "./";
-// import { ShippingAddress } from './CartProvider';
 
 type CartActionType =
   | {
@@ -20,7 +19,8 @@ type CartActionType =
         tax: number;
         total: number;
       };
-    };
+    }
+  | { type: "[Cart] - Order complete" };
 
 export const cartReducer = (
   state: CartState,
@@ -58,17 +58,26 @@ export const cartReducer = (
           return idProduct !== idProductRemove;
         }),
       };
-    case '[Cart] - Update order summary':
+    case "[Cart] - Update order summary":
       return {
         ...state,
-        ...action.payload
-      }
-    case '[Cart] - Updated Address from cookies':
-    case '[Cart] - LoadAddress from cookies':
+        ...action.payload,
+      };
+    case "[Cart] - Updated Address from cookies":
+    case "[Cart] - LoadAddress from cookies":
       return {
         ...state,
-        shippingAddress: action.payload
-      }
+        shippingAddress: action.payload,
+      };
+    case "[Cart] - Order complete":
+      return {
+        ...state,
+        cart: [],
+        numberOfItems: 0,
+        subTotal: 0,
+        tax: 0,
+        total: 0,
+      };
     default:
       return state;
   }
